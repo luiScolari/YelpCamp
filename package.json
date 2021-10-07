@@ -1,9 +1,61 @@
 {
+  
+  "name": "yelpcamp",
+  
+  "description": "YelpCamp project",
+  
+  "version": "1.0.0",
+  
+  "main": "app.js",
+  
+  "scripts": {
+  
+    
+  "test": "echo \"Error: no test specified\" && exit 1"
+  
+  },
+  
+  "repository": {
+  
+    
+  "type": "git",
+  
+    
+  "url": "git+https://github.com/luiScolari/YelpCamp.git"
+  
+  },
+  
+  "keywords": [],
+  
+  "author": "",
+  
+  "license": "ISC",
+  
+  "bugs": {
+  
+    
+  "url": "https://github.com/luiScolari/YelpCamp/issues"
+  
+  },
+  
+  "homepage": "https://github.com/luiScolari/YelpCamp#readme",
+  
   "dependencies": {
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "method-override": "^3.0.0",
-    "mongoose": "^6.0.8",
-    "nodemon": "^2.0.13"
+  
+    
+  "ejs": "^3.1.6",
+  
+    
+  "express": "^4.17.1",
+  
+    
+  "method-override": "^3.0.0",
+  
+    
+  "mongoose": "^6.0.8",
+  
+    
+  "nodemon": "^2.0.13"
+  
   }
 }

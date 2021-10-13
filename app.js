@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const mongoose = require('mongoose')
-const ejsMate = require('ejs-mate')
+const mongoose = require('mongoose');
+const ejsMate = require('ejs-mate');
 const Campground = require('./models/campground');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 const { application } = require('express');
 const { findByIdAndUpdate, findById } = require('./models/campground');
 

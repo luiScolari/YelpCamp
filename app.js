@@ -7,8 +7,9 @@ const Campground = require('./models/campground');
 const methodOverride = require('method-override');
 const { application } = require('express');
 const { findByIdAndUpdate, findById } = require('./models/campground');
-const AppError = require('./utils/AppError');
-const wrapAsync = require('./utils/asynCatch')
+const ExpressError = require('./utils/ExpressError');
+const wrapAsync = require('./utils/asynCatch');
+
 
 app.engine('ejs', ejsMate)
 
@@ -40,6 +41,7 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 app.post('/campgrounds', wrapAsync(async (req, res) => {
+    if (!req.body.campground) throw new ExpressError('Invalid campground data', 400)
     const newCamp = new Campground(req.body.campground);
     await newCamp.save();
     res.redirect(`/campgrounds/${newCamp._id}`);
@@ -55,7 +57,6 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
     res.render('campgrounds/edit', { campground });
 }));
 
-
 app.put('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
@@ -68,9 +69,14 @@ app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     res.redirect('/campgrounds');
 }));
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Not found', 404))
+})
+
 app.use((err, req, res, next) => {
-    const { message = 'Something went wrong', status = 500 } = err;
-    res.status(status).send(message)
+    const { status = 500 } = err;
+    if (!err.message) err.message = 'Something went wrong'
+    res.status(status).render('error', { err })
 })
 
 app.listen(3000, () => {

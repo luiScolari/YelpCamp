@@ -10,6 +10,7 @@ const { findByIdAndUpdate, findById } = require('./models/campground');
 const ExpressError = require('./utils/ExpressError');
 const wrapAsync = require('./utils/asynCatch');
 const { campgroundSchema } = require('./schemas');
+const Review = require('./models/review')
 
 app.engine('ejs', ejsMate)
 
@@ -77,6 +78,15 @@ app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+}));
+
+app.post('/campgrounds/:id/reviews', wrapAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params._id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 app.all('*', (req, res, next) => {

@@ -9,7 +9,7 @@ const { application } = require('express');
 const { findByIdAndUpdate, findById } = require('./models/campground');
 const ExpressError = require('./utils/ExpressError');
 const wrapAsync = require('./utils/asynCatch');
-const { campgroundSchema } = require('./schemas');
+const { campgroundSchema, reviewSchema } = require('./schemas');
 const Review = require('./models/review')
 
 app.engine('ejs', ejsMate)
@@ -38,6 +38,16 @@ const validateCampground = (req, res, next) => {
     }
 }
 
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home');
 });
@@ -59,7 +69,7 @@ app.post('/campgrounds', validateCampground, wrapAsync(async (req, res) => {
 }));
 
 app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findById(req.params.id).populate('reviews');
     res.render('campgrounds/show', { campground });
 }));
 
@@ -80,7 +90,7 @@ app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     res.redirect('/campgrounds');
 }));
 
-app.post('/campgrounds/:id/reviews', wrapAsync(async (req, res) => {
+app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
     campground.reviews.push(review);

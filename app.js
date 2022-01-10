@@ -10,9 +10,12 @@ const { findByIdAndUpdate, findById } = require('./models/campground');
 const ExpressError = require('./utils/ExpressError');
 const wrapAsync = require('./utils/asynCatch');
 const { campgroundSchema, reviewSchema } = require('./schemas');
+const session = require('express-session')
+const flash = require('connect-flash')
 
 const campgroundRoutes = require('./routes/campgrounds');
-const reviewRoutes = require('./routes/reviews')
+const reviewRoutes = require('./routes/reviews');
+const { date } = require('joi');
 
 app.engine('ejs', ejsMate)
 
@@ -21,6 +24,20 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
+const sessionConfig = {
+    secret: 'Not a good secret',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+
+}
+app.use(session(sessionConfig));
+app.use(flash());
 
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -32,25 +49,11 @@ db.once("open", () => {
     console.log("Database connected");
 })
 
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    next();
+})
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body)
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);

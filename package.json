@@ -70,7 +70,16 @@
   "mongoose": "^6.0.8",
   
     
-  "nodemon": "^2.0.14"
+  "nodemon": "^2.0.14",
+  
+    
+  "passport": "^0.5.2",
+  
+    
+  "passport-local": "^1.0.0",
+  
+    
+  "passport-local-mongoose": "^6.1.0"
   
   }
 }

@@ -5,21 +5,34 @@
         <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
-                    <img class="img-fluid" src="<%= campground.image %> " alt="">
+                    <h1>
+                        <%= campground.images.url %>
+                    </h1>
+                    <% if(campground.images.length) { %>
+                        <img class="img-fluid" src="<%= campground.images[0].url %>" alt="">
+                        <% } else { %>
+                            <img class="img-fluid"
+                                src="https://res.cloudinary.com/dkxm25ye9/image/upload/v1643275647/YelpCamp/e5tqhy2qziou3a1nxx7f.jpg"
+                                alt="">
+                            <% } %>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">
                             <%= campground.title %>
                         </h5>
-                        <p class="card-text"><%= campground.description %> </p>
                         <p class="card-text">
-                            <small class="text-muted"><%= campground.location %> </small>
+                            <%= campground.description %>
                         </p>
-                        <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title %> </a>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%= campground.location %>
+                            </small>
+                        </p>
+                        <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title
+                                %> </a>
                     </div>
                 </div>
             </div>
         </div>
         <% } %>
-

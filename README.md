@@ -5,7 +5,7 @@
     <div>
         YelpCamp is a project developed in "The Web Developer Bootcamp 2022" Udemy course
         <p>
-        The website is basically a helper for people find a campground to stay
+        The website is basically a helper for people to find a campground to stay
         </p>
     </div>
     <div> 

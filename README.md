@@ -3,15 +3,14 @@
         <h1>YelpCamp</h1> <img src="./ReadmeImgs/conga_parrot_.gif" alt="">
     </div>
     <div>
-        The projects use except the default Web tools (HTML5, CSS3, Javascript) :
+        YelpCamp is a project developed in "The Web Developer Bootcamp 2022" Udemy course
+        <p>
+        The website is basically helper for people find a campground to stay
+        </p>
     </div>
-    <div>
-        <ul>
-            <li>Express</li>
-            <li>Node.Js</li>
-            <li>MongoDB</li>
-            <li>Bootstrap</li>
-        </ul>
+    <div> 
+    <h2>Dependencies</h2> 
+    <img src="./ReadmeImgs/carbon.png" alt="">
     </div>
     <div>
   <h1>CRUD</h1>
